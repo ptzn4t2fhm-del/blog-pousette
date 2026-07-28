@@ -11,26 +11,38 @@ const categoryLabels: Record<string, string> = {
   guide: 'Guide complet',
   article: 'Article',
 };
+
+const categoryClass: Record<string, string> = {
+  comparatif: 'badge-comparatif',
+  guide: 'badge-guide',
+  article: 'badge-article',
+};
 ---
 
 <BaseLayout
   title="Guides et comparatifs de poussettes"
   description="Comparatifs, guides d'achat et conseils pour choisir la meilleure poussette selon vos besoins et votre budget."
 >
-  <h1>Guides et comparatifs de poussettes</h1>
-  <p>
-    Chaque jour, un nouveau contenu pour vous aider à choisir la poussette
-    idéale : comparatifs détaillés, guides complets et conseils pratiques.
-  </p>
+  <section class="hero">
+    <h1>Choisissez la poussette parfaite pour votre famille</h1>
+    <p>
+      Chaque jour, un nouveau contenu pour vous aider à décider : comparatifs
+      détaillés, guides d'achat complets et conseils pratiques, sans jargon
+      inutile.
+    </p>
+  </section>
 
-  <ul class="article-list">
+  <ul class="article-grid">
     {
       articles.map((article) => (
-        <li>
+        <li class="article-card">
           <a href={`/articles/${article.id}/`}>
-            <span class="badge">{categoryLabels[article.data.category]}</span>
+            <span class={`badge ${categoryClass[article.data.category]}`}>
+              {categoryLabels[article.data.category]}
+            </span>
             <h2>{article.data.title}</h2>
             <p>{article.data.description}</p>
+            <span class="read-more">Lire l'article →</span>
           </a>
         </li>
       ))
@@ -41,41 +53,94 @@ const categoryLabels: Record<string, string> = {
 </BaseLayout>
 
 <style>
-  .article-list {
+  .hero {
+    background-color: var(--color-secondary-light);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .hero p {
+    color: var(--color-text-muted);
+    max-width: 46ch;
+    margin-inline: auto;
+    font-size: 1.05rem;
+  }
+
+  .article-grid {
     list-style: none;
     padding: 0;
-    margin: 2rem 0;
+    margin: 0;
+    display: grid;
+    gap: 1.25rem;
   }
 
-  .article-list li {
-    border-bottom: 1px solid #eee;
-    padding-block: 1.5rem;
+  .article-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .article-list a {
+  .article-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(45, 42, 38, 0.08);
+    border-color: transparent;
+  }
+
+  .article-card a {
     text-decoration: none;
     color: inherit;
     display: block;
+    padding: 1.5rem;
   }
 
-  .article-list h2 {
-    margin: 0.5rem 0;
-    font-size: 1.25rem;
+  .article-card h2 {
+    margin: 0.75rem 0 0.5rem;
+    font-size: 1.3rem;
+  }
+
+  .article-card p {
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .read-more {
+    display: inline-block;
+    margin-top: 1rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    font-size: 0.9rem;
   }
 
   .badge {
     display: inline-block;
-    background-color: #f0f0f0;
-    color: #333;
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    padding: 0.2rem 0.6rem;
+    letter-spacing: 0.02em;
+    padding: 0.25rem 0.7rem;
     border-radius: 999px;
   }
 
-  .article-list p {
-    color: #555;
-    margin: 0;
+  .badge-comparatif {
+    background-color: #f5e2da;
+    color: var(--color-primary-dark);
+  }
+
+  .badge-guide {
+    background-color: var(--color-secondary-light);
+    color: var(--color-secondary);
+  }
+
+  .badge-article {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
   }
 </style>

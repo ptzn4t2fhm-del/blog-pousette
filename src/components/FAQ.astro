@@ -25,21 +25,45 @@ const { items } = Astro.props;
 
 <style>
   .faq {
-    margin-block: 2rem;
+    margin-block: 2.5rem;
   }
 
   details {
-    border-bottom: 1px solid #e5e5e5;
-    padding-block: 1rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  details[open] {
+    border-color: var(--color-secondary);
   }
 
   summary {
     cursor: pointer;
     font-weight: 600;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::before {
+    content: '+';
+    display: inline-block;
+    width: 1.2rem;
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  details[open] summary::before {
+    content: '−';
   }
 
   details p {
-    margin-top: 0.75rem;
-    color: #444;
+    margin: 0.75rem 0 0 1.2rem;
+    color: var(--color-text-muted);
   }
 </style>

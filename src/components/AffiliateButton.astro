@@ -20,15 +20,17 @@ const { url, label = "Voir le prix sur Amazon" } = Astro.props;
   .affiliate-button {
     display: inline-block;
     background-color: #ff9900;
-    color: #111;
+    color: #16130f;
+    font-family: var(--font-body);
     font-weight: 700;
     padding: 0.75rem 1.5rem;
-    border-radius: 8px;
+    border-radius: 10px;
     text-decoration: none;
-    transition: background-color 0.15s ease;
+    transition: background-color 0.15s ease, transform 0.15s ease;
   }
 
   .affiliate-button:hover {
     background-color: #e88a00;
+    transform: translateY(-1px);
   }
 </style>

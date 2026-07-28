@@ -27,9 +27,9 @@ const { products } = Astro.props;
         {products.map((p) => (
           <tr>
             <td>{p.name}</td>
-            <td>{p.rating ? `${p.rating}/5` : '—'}</td>
+            <td>{p.rating ? `★ ${p.rating}/5` : '—'}</td>
             <td>
-              <a href={p.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">
+              <a class="table-link" href={p.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">
                 Voir le prix
               </a>
             </td>
@@ -44,6 +44,8 @@ const { products } = Astro.props;
   .table-wrapper {
     overflow-x: auto;
     margin-block: 2rem;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
   }
 
   table {
@@ -54,11 +56,34 @@ const { products } = Astro.props;
   th,
   td {
     text-align: left;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #e5e5e5;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
   }
 
   th {
-    background-color: #f7f7f7;
+    background-color: var(--color-secondary-light);
+    color: var(--color-secondary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  td:nth-child(2) {
+    color: var(--color-primary-dark);
+    font-weight: 600;
+  }
+
+  .table-link {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .table-link:hover {
+    text-decoration: underline;
   }
 </style>

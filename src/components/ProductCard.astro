@@ -11,16 +11,28 @@ interface Props {
 }
 
 const { name, affiliateUrl, imageUrl, rating, pros = [], cons = [] } = Astro.props;
+
+const fullStars = rating ? Math.round(rating) : 0;
 ---
 
-<article class="product-card">
+<article class:list={['product-card', { 'has-image': Boolean(imageUrl) }]}>
   {imageUrl && <img src={imageUrl} alt={name} loading="lazy" width="240" height="240" />}
   <div class="content">
     <h3>{name}</h3>
-    {rating && <p class="rating">Note : {rating}/5</p>}
+    {
+      rating && (
+        <p class="rating">
+          <span class="stars" aria-hidden="true">
+            {'★'.repeat(fullStars)}
+            {'☆'.repeat(5 - fullStars)}
+          </span>
+          <span class="rating-value">{rating}/5</span>
+        </p>
+      )
+    }
     <div class="pros-cons">
       {pros.length > 0 && (
-        <div>
+        <div class="pros">
           <strong>Avantages</strong>
           <ul>
             {pros.map((p) => <li>{p}</li>)}
@@ -28,7 +40,7 @@ const { name, affiliateUrl, imageUrl, rating, pros = [], cons = [] } = Astro.pro
         </div>
       )}
       {cons.length > 0 && (
-        <div>
+        <div class="cons">
           <strong>Inconvénients</strong>
           <ul>
             {cons.map((c) => <li>{c}</li>)}
@@ -43,18 +55,45 @@ const { name, affiliateUrl, imageUrl, rating, pros = [], cons = [] } = Astro.pro
 <style>
   .product-card {
     display: grid;
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 1fr;
     gap: 1.5rem;
-    border: 1px solid #e5e5e5;
-    border-radius: 12px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
     padding: 1.5rem;
     margin-block: 1.5rem;
+  }
+
+  .product-card.has-image {
+    grid-template-columns: 200px 1fr;
   }
 
   .product-card img {
     object-fit: contain;
     width: 100%;
     height: auto;
+    border-radius: 10px;
+  }
+
+  h3 {
+    margin-top: 0;
+  }
+
+  .rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.25rem 0 1rem;
+  }
+
+  .stars {
+    color: var(--color-primary);
+    letter-spacing: 0.05em;
+  }
+
+  .rating-value {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
   }
 
   .pros-cons {
@@ -64,8 +103,41 @@ const { name, affiliateUrl, imageUrl, rating, pros = [], cons = [] } = Astro.pro
     margin-block: 1rem;
   }
 
+  .pros-cons ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+  }
+
+  .pros-cons li {
+    padding-left: 1.3rem;
+    position: relative;
+    margin-bottom: 0.35rem;
+    font-size: 0.92rem;
+  }
+
+  .pros li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-secondary);
+    font-weight: 700;
+  }
+
+  .cons li::before {
+    content: '✕';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
   @media (max-width: 640px) {
-    .product-card {
+    .product-card.has-image {
+      grid-template-columns: 1fr;
+    }
+
+    .pros-cons {
       grid-template-columns: 1fr;
     }
   }
