@@ -4,6 +4,7 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import ComparisonTable from '../../components/ComparisonTable.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import FAQ from '../../components/FAQ.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles');
@@ -14,7 +15,7 @@ export async function getStaticPaths() {
 }
 
 const { article } = Astro.props;
-const { Content } = await render(article);
+const { Content, headings } = await render(article);
 const { title, description, pubDate, category, products, faq } = article.data;
 ---
 
@@ -27,6 +28,8 @@ const { title, description, pubDate, category, products, faq } = article.data;
   products={products}
 >
   {category === 'comparatif' && products.length > 0 && <ComparisonTable products={products} />}
+
+  <TableOfContents headings={headings} />
 
   <Content />
 
