@@ -17,10 +17,13 @@ const items = headings.filter((h) => h.depth === 2);
 {items.length > 1 && (
   <nav class="toc" aria-label="Sommaire">
     <p class="toc-title">Sommaire</p>
-    <ol>
-      {items.map((item) => (
+    <ol class="toc-grid">
+      {items.map((item, index) => (
         <li>
-          <a href={`#${item.slug}`}>{item.text}</a>
+          <a href={`#${item.slug}`} class="toc-card">
+            <span class="toc-number">{index + 1}</span>
+            <span class="toc-text">{item.text}</span>
+          </a>
         </li>
       ))}
     </ol>
@@ -37,7 +40,7 @@ const items = headings.filter((h) => h.depth === 2);
   }
 
   .toc-title {
-    margin: 0 0 0.6rem;
+    margin: 0 0 0.9rem;
     font-weight: 700;
     color: var(--color-secondary);
     text-transform: uppercase;
@@ -45,20 +48,47 @@ const items = headings.filter((h) => h.depth === 2);
     letter-spacing: 0.03em;
   }
 
-  .toc ol {
+  .toc-grid {
+    list-style: none;
     margin: 0;
-    padding-left: 1.2rem;
+    padding: 0;
     display: grid;
-    gap: 0.4rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.65rem;
   }
 
-  .toc a {
-    color: var(--color-primary-dark);
+  .toc-card {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    height: 100%;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 0.75rem 0.9rem;
+    color: var(--color-text);
     text-decoration: none;
     font-weight: 600;
+    font-size: 0.92rem;
+    transition: border-color 0.15s ease, transform 0.15s ease;
   }
 
-  .toc a:hover {
-    text-decoration: underline;
+  .toc-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-1px);
+  }
+
+  .toc-number {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-color: var(--color-secondary-light);
+    color: var(--color-secondary);
+    font-size: 0.8rem;
+    font-weight: 700;
   }
 </style>
