@@ -2,8 +2,8 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// IMPORTANT: remplacer par le vrai domaine une fois acheté
-const SITE_URL = 'https://votre-domaine.fr';
+// À remplacer si un nom de domaine personnalisé est acheté plus tard
+const SITE_URL = 'https://blog-pousette.vercel.app';
 
 // https://astro.build/config
 export default defineConfig({
