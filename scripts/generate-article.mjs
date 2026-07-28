@@ -1,17 +1,21 @@
-import 'dotenv/config';
+import { config as loadEnv } from 'dotenv';
 import { writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
-import yaml from 'js-yaml';
+import { dump as dumpYaml } from 'js-yaml';
 
 import { getNextTopic } from './topics.mjs';
 import { buildAffiliateSearchUrl } from './affiliate.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ARTICLES_DIR = path.join(__dirname, '..', 'src', 'content', 'articles');
+
+// override: true car certains environnements pré-définissent ANTHROPIC_API_KEY
+// à une chaîne vide, ce que dotenv ne remplace pas par défaut.
+loadEnv({ path: path.join(__dirname, '..', '.env'), override: true });
 
 const CATEGORY_INSTRUCTIONS = {
   comparatif: `Ceci est un GUIDE COMPARATIF. Compare 3 à 5 produits (poussettes) concrets et
@@ -139,7 +143,7 @@ intégrés naturellement, et une FAQ finale.`;
   const dateStr = pubDate.toISOString().slice(0, 10);
   const fileSlug = `${dateStr}-${slugify(article.slug || article.title)}`;
 
-  const frontmatter = yaml.dump({
+  const frontmatter = dumpYaml({
     title: article.title,
     description: article.metaDescription,
     pubDate: pubDate.toISOString(),
