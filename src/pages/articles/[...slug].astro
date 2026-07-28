@@ -1,0 +1,52 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import ComparisonTable from '../../components/ComparisonTable.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import FAQ from '../../components/FAQ.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const { title, description, pubDate, category, products, faq } = article.data;
+---
+
+<ArticleLayout
+  title={title}
+  description={description}
+  pubDate={pubDate}
+  category={category}
+  faq={faq}
+  products={products}
+>
+  {category === 'comparatif' && products.length > 0 && <ComparisonTable products={products} />}
+
+  <Content />
+
+  {
+    products.length > 0 && (
+      <section>
+        <h2>Notre sélection</h2>
+        {products.map((product) => (
+          <ProductCard
+            name={product.name}
+            affiliateUrl={product.affiliateUrl}
+            imageUrl={product.imageUrl}
+            rating={product.rating}
+            pros={product.pros}
+            cons={product.cons}
+          />
+        ))}
+      </section>
+    )
+  }
+
+  <FAQ items={faq} />
+</ArticleLayout>

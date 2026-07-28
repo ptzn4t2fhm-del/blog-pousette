@@ -1,0 +1,45 @@
+---
+interface Item {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  items: Item[];
+}
+
+const { items } = Astro.props;
+---
+
+{items.length > 0 && (
+  <section class="faq">
+    <h2>Questions fréquentes</h2>
+    {items.map((item) => (
+      <details>
+        <summary>{item.question}</summary>
+        <p>{item.answer}</p>
+      </details>
+    ))}
+  </section>
+)}
+
+<style>
+  .faq {
+    margin-block: 2rem;
+  }
+
+  details {
+    border-bottom: 1px solid #e5e5e5;
+    padding-block: 1rem;
+  }
+
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  details p {
+    margin-top: 0.75rem;
+    color: #444;
+  }
+</style>

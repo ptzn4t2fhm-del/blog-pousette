@@ -1,0 +1,64 @@
+---
+interface Product {
+  name: string;
+  affiliateUrl: string;
+  imageUrl?: string;
+  rating?: number;
+}
+
+interface Props {
+  products: Product[];
+}
+
+const { products } = Astro.props;
+---
+
+{products.length > 0 && (
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>Note</th>
+          <th>Lien</th>
+        </tr>
+      </thead>
+      <tbody>
+        {products.map((p) => (
+          <tr>
+            <td>{p.name}</td>
+            <td>{p.rating ? `${p.rating}/5` : '—'}</td>
+            <td>
+              <a href={p.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">
+                Voir le prix
+              </a>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
+
+<style>
+  .table-wrapper {
+    overflow-x: auto;
+    margin-block: 2rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  th {
+    background-color: #f7f7f7;
+  }
+</style>

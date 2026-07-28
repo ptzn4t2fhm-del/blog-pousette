@@ -1,0 +1,72 @@
+---
+import AffiliateButton from './AffiliateButton.astro';
+
+interface Props {
+  name: string;
+  affiliateUrl: string;
+  imageUrl?: string;
+  rating?: number;
+  pros?: string[];
+  cons?: string[];
+}
+
+const { name, affiliateUrl, imageUrl, rating, pros = [], cons = [] } = Astro.props;
+---
+
+<article class="product-card">
+  {imageUrl && <img src={imageUrl} alt={name} loading="lazy" width="240" height="240" />}
+  <div class="content">
+    <h3>{name}</h3>
+    {rating && <p class="rating">Note : {rating}/5</p>}
+    <div class="pros-cons">
+      {pros.length > 0 && (
+        <div>
+          <strong>Avantages</strong>
+          <ul>
+            {pros.map((p) => <li>{p}</li>)}
+          </ul>
+        </div>
+      )}
+      {cons.length > 0 && (
+        <div>
+          <strong>Inconvénients</strong>
+          <ul>
+            {cons.map((c) => <li>{c}</li>)}
+          </ul>
+        </div>
+      )}
+    </div>
+    <AffiliateButton url={affiliateUrl} />
+  </div>
+</article>
+
+<style>
+  .product-card {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 1.5rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-block: 1.5rem;
+  }
+
+  .product-card img {
+    object-fit: contain;
+    width: 100%;
+    height: auto;
+  }
+
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-block: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .product-card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

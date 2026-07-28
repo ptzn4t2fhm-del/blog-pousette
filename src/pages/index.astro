@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const articles = (await getCollection('articles')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const categoryLabels: Record<string, string> = {
+  comparatif: 'Comparatif',
+  guide: 'Guide complet',
+  article: 'Article',
+};
+---
+
+<BaseLayout
+  title="Guides et comparatifs de poussettes"
+  description="Comparatifs, guides d'achat et conseils pour choisir la meilleure poussette selon vos besoins et votre budget."
+>
+  <h1>Guides et comparatifs de poussettes</h1>
+  <p>
+    Chaque jour, un nouveau contenu pour vous aider à choisir la poussette
+    idéale : comparatifs détaillés, guides complets et conseils pratiques.
+  </p>
+
+  <ul class="article-list">
+    {
+      articles.map((article) => (
+        <li>
+          <a href={`/articles/${article.id}/`}>
+            <span class="badge">{categoryLabels[article.data.category]}</span>
+            <h2>{article.data.title}</h2>
+            <p>{article.data.description}</p>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  {articles.length === 0 && <p>Aucun article publié pour le moment.</p>}
+</BaseLayout>
+
+<style>
+  .article-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+  }
+
+  .article-list li {
+    border-bottom: 1px solid #eee;
+    padding-block: 1.5rem;
+  }
+
+  .article-list a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .article-list h2 {
+    margin: 0.5rem 0;
+    font-size: 1.25rem;
+  }
+
+  .badge {
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+  }
+
+  .article-list p {
+    color: #555;
+    margin: 0;
+  }
+</style>

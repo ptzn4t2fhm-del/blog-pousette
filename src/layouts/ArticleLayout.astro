@@ -1,0 +1,122 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface Product {
+  name: string;
+  affiliateUrl: string;
+  imageUrl?: string;
+  rating?: number;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  category: 'comparatif' | 'guide' | 'article';
+  image?: string;
+  faq?: FAQItem[];
+  products?: Product[];
+}
+
+const { title, description, pubDate, category, image, faq = [], products = [] } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  dateModified: pubDate.toISOString(),
+  ...(image ? { image: new URL(image, Astro.site).toString() } : {}),
+  mainEntityOfPage: canonicalURL.toString(),
+};
+
+const faqJsonLd =
+  faq.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faq.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : null;
+
+const itemListJsonLd =
+  category === 'comparatif' && products.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        itemListElement: products.map((p, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.name,
+          url: p.affiliateUrl,
+        })),
+      }
+    : null;
+
+const categoryLabels: Record<string, string> = {
+  comparatif: 'Comparatif',
+  guide: 'Guide complet',
+  article: 'Article',
+};
+---
+
+<BaseLayout title={title} description={description} image={image}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
+  {faqJsonLd && <script slot="head" type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
+  {itemListJsonLd && <script slot="head" type="application/ld+json" set:html={JSON.stringify(itemListJsonLd)} />}
+
+  <article>
+    <p class="category-badge">{categoryLabels[category]}</p>
+    <h1>{title}</h1>
+    <p class="meta">
+      Publié le {pubDate.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
+    </p>
+    {image && <img src={image} alt={title} />}
+
+    <div class="article-body">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .category-badge {
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+  }
+
+  .meta {
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .article-body :global(h2) {
+    margin-top: 2.5rem;
+  }
+
+  .article-body :global(h3) {
+    margin-top: 1.75rem;
+  }
+</style>
