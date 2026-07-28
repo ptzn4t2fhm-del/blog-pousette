@@ -61,6 +61,11 @@ const siteName = 'Guide Poussette';
           En tant que Partenaire Amazon, ce site réalise un bénéfice sur les
           achats remplissant les conditions requises.
         </p>
+        <p class="footer-links">
+          <a href="/mentions-legales">Mentions légales</a>
+          <span aria-hidden="true">·</span>
+          <a href="/politique-de-confidentialite">Politique de confidentialité</a>
+        </p>
         <p>&copy; {new Date().getFullYear()} {siteName}</p>
       </div>
     </footer>
@@ -154,6 +159,15 @@ const siteName = 'Guide Poussette';
 
       .site-footer p {
         margin: 0.35rem 0;
+      }
+
+      .footer-links a {
+        color: var(--color-text-muted);
+        text-decoration: underline;
+      }
+
+      .footer-links span {
+        margin-inline: 0.35rem;
       }
 
       img {
