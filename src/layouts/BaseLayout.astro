@@ -44,7 +44,17 @@ const siteName = 'Poussette Malin';
   <body>
     <header class="site-header">
       <nav class="container">
-        <a href="/" class="logo">{siteName}</a>
+        <a href="/" class="logo">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 8c2-3 6-5 10-4" />
+            <path d="M6 8h11l-1.5 7a2 2 0 0 1-2 1.6H9a2 2 0 0 1-2-1.6L6 8Z" />
+            <path d="M17 8c1.5 0 2.5 1 2.5 2" />
+            <circle cx="9" cy="19.3" r="1.5" />
+            <circle cx="15" cy="19.3" r="1.5" />
+            <path d="M4 8V6" />
+          </svg>
+          <span class="logo-text">{siteName}</span>
+        </a>
       </nav>
     </header>
 
@@ -136,11 +146,24 @@ const siteName = 'Poussette Malin';
       }
 
       .site-header .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        width: 1.7rem;
+        height: 1.7rem;
+        flex-shrink: 0;
+        color: var(--color-secondary);
+      }
+
+      .logo-text {
         font-family: var(--font-heading);
         font-weight: 700;
         font-size: 1.9rem;
         letter-spacing: 0.01em;
-        text-decoration: none;
         background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
         background-clip: text;
         -webkit-background-clip: text;
