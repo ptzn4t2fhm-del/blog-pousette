@@ -93,14 +93,17 @@ async function generateArticle() {
 
   const client = new Anthropic();
 
+  const currentYear = new Date().getFullYear();
+
   const systemPrompt = `Tu es un rédacteur web expert en SEO et spécialiste de la puériculture,
-en particulier des poussettes. Tu écris en français, pour un blog d'affiliation Amazon
-français destiné aux parents. Ton contenu est concret, précis, utile, sans blabla superflu,
-et optimisé pour le référencement naturel (structure claire, mots-clés naturellement intégrés,
-réponses directes aux questions que se posent les parents). Tu ne mentionnes jamais de prix
-exacts (ils changent trop souvent) ; parle plutôt de gammes de prix (entrée de gamme, milieu de
-gamme, premium). Tu ne dois jamais inventer de caractéristiques techniques absurdes ou
-dangereuses.`;
+en particulier des poussettes. Nous sommes en ${currentYear} : si tu mentionnes une année
+(dans le titre ou le corps de l'article), utilise toujours ${currentYear}, jamais une année
+passée. Tu écris en français, pour un blog d'affiliation Amazon français destiné aux parents.
+Ton contenu est concret, précis, utile, sans blabla superflu, et optimisé pour le référencement
+naturel (structure claire, mots-clés naturellement intégrés, réponses directes aux questions que
+se posent les parents). Tu ne mentionnes jamais de prix exacts (ils changent trop souvent) ;
+parle plutôt de gammes de prix (entrée de gamme, milieu de gamme, premium). Tu ne dois jamais
+inventer de caractéristiques techniques absurdes ou dangereuses.`;
 
   const userPrompt = `Rédige un article de blog d'environ 2500 mots sur le sujet suivant :
 "${topic}"

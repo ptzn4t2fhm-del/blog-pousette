@@ -1,5 +1,5 @@
 ---
-title: 'Poussette Multi-Enfants : Guide d''Achat Complet 2024'
+title: 'Poussette Multi-Enfants : Guide d''Achat Complet 2026'
 description: >-
   Découvrez comment choisir la meilleure poussette pour plusieurs enfants d'âges
   différents : double, tandem, avec planche. Conseils, comparatif et
