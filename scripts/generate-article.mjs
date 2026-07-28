@@ -25,9 +25,12 @@ Bébé Confort, Hauck, etc.). Pour chaque produit : nom précis (marque + modèl
 critère de comparaison (prix, poids, sécurité, confort, praticité), un classement final
 (ex: "meilleure globale", "meilleur rapport qualité-prix", "meilleure pour voyager").`,
   guide: `Ceci est un GUIDE COMPLET (evergreen). Couvre le sujet en profondeur avec des sections
-H2/H3 claires, des conseils pratiques et actionnables. Tu peux mentionner 1 à 3 produits
-concrets et réalistes à titre d'exemple ou de recommandation, avec nom précis, note sur 5,
-avantages et inconvénients, mais ce n'est pas obligatoire si le sujet ne s'y prête pas.`,
+H2/H3 claires, des conseils pratiques et actionnables. Recommande 3 à 5 produits concrets et
+réalistes (marques reconnues : Bugaboo, Babyzen Yoyo, Chicco, Joie, Cybex, Thule, UPPAbaby,
+Bébé Confort, Hauck, etc.), chacun adapté à un cas d'usage différent évoqué dans le guide
+(ex: "meilleure pour les jumeaux", "meilleure pour un usage urbain", "meilleur budget"), avec
+nom précis, note sur 5, avantages et inconvénients. N'en propose moins que 3 uniquement si le
+sujet ne s'y prête vraiment pas.`,
   article: `Ceci est un ARTICLE THÉMATIQUE de type magazine (conseils, style de vie, réflexion).
 Ton informatif et chaleureux. Tu peux mentionner 0 à 2 produits concrets pertinents avec nom
 précis, note sur 5, avantages et inconvénients, uniquement si cela apporte une réelle valeur.`,
