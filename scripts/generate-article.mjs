@@ -114,21 +114,40 @@ L'article doit être parfaitement optimisé pour le référencement naturel (SEO
 des sous-titres H2/H3, réponses claires aux intentions de recherche, mots-clés pertinents
 intégrés naturellement, et une FAQ finale.`;
 
-  const stream = client.messages.stream({
-    model: 'claude-opus-4-7',
-    max_tokens: 16000,
-    thinking: { type: 'adaptive' },
-    output_config: {
-      effort: 'high',
-      format: zodOutputFormat(GeneratedArticleSchema),
-    },
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }],
-  });
+  // Le streaming peut être interrompu par un incident réseau transitoire
+  // (ex: ETIMEDOUT en pleine réception) : ce n'est pas retenté automatiquement
+  // par le SDK une fois le stream ouvert, donc on retente nous-mêmes ici.
+  const MAX_ATTEMPTS = 3;
+  let finalMessage;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
+    try {
+      const stream = client.messages.stream({
+        model: 'claude-opus-4-7',
+        max_tokens: 16000,
+        thinking: { type: 'adaptive' },
+        output_config: {
+          effort: 'high',
+          format: zodOutputFormat(GeneratedArticleSchema),
+        },
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userPrompt }],
+      });
 
-  stream.on('text', (delta) => process.stdout.write(delta));
+      stream.on('text', (delta) => process.stdout.write(delta));
 
-  const finalMessage = await stream.finalMessage();
+      finalMessage = await stream.finalMessage();
+      break;
+    } catch (error) {
+      const isLastAttempt = attempt === MAX_ATTEMPTS;
+      console.error(
+        `\nTentative ${attempt}/${MAX_ATTEMPTS} échouée (${error.message}).` +
+          (isLastAttempt ? ' Abandon.' : ' Nouvelle tentative...'),
+      );
+      if (isLastAttempt) throw error;
+      await new Promise((resolve) => setTimeout(resolve, attempt * 5000));
+    }
+  }
+
   const textBlock = finalMessage.content.find((block) => block.type === 'text');
   if (!textBlock) {
     throw new Error("Aucun contenu texte reçu depuis l'API Claude.");
