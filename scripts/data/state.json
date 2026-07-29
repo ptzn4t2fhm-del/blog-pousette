@@ -1,5 +1,5 @@
 {
-  "dayCount": 2,
+  "dayCount": 3,
   "usedTopics": {
     "comparatif": [
       "Poussette électrique vs poussette manuelle"
@@ -7,6 +7,8 @@
     "guide": [
       "Guide d'achat : poussette pour plusieurs enfants d'âges différents"
     ],
-    "article": []
+    "article": [
+      "Poussette et sécurité routière : ce qu'il faut savoir"
+    ]
   }
 }
