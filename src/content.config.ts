@@ -9,6 +9,7 @@ const articles = defineCollection({
     pubDate: z.coerce.date(),
     category: z.enum(['comparatif', 'guide', 'article']),
     keywords: z.array(z.string()).default([]),
+    coverImage: z.string().optional(),
     products: z
       .array(
         z.object({

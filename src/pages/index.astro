@@ -37,12 +37,24 @@ const categoryClass: Record<string, string> = {
       articles.map((article) => (
         <li class="article-card">
           <a href={`/articles/${article.id}/`}>
-            <span class={`badge ${categoryClass[article.data.category]}`}>
-              {categoryLabels[article.data.category]}
-            </span>
-            <h2>{article.data.title}</h2>
-            <p>{article.data.description}</p>
-            <span class="read-more">Lire l'article →</span>
+            {article.data.coverImage && (
+              <div class="card-image">
+                <img src={article.data.coverImage} alt={article.data.title} loading="lazy" />
+                <span class={`badge ${categoryClass[article.data.category]}`}>
+                  {categoryLabels[article.data.category]}
+                </span>
+              </div>
+            )}
+            <div class="card-body">
+              {!article.data.coverImage && (
+                <span class={`badge ${categoryClass[article.data.category]}`}>
+                  {categoryLabels[article.data.category]}
+                </span>
+              )}
+              <h2>{article.data.title}</h2>
+              <p>{article.data.description}</p>
+              <span class="read-more">Lire l'article →</span>
+            </div>
           </a>
         </li>
       ))
@@ -78,7 +90,8 @@ const categoryClass: Record<string, string> = {
     padding: 0;
     margin: 0;
     display: grid;
-    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
   }
 
   .article-card {
@@ -98,6 +111,35 @@ const categoryClass: Record<string, string> = {
     text-decoration: none;
     color: inherit;
     display: block;
+    overflow: hidden;
+    border-radius: 16px;
+  }
+
+  .card-image {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.25s ease;
+  }
+
+  .article-card:hover .card-image img {
+    transform: scale(1.05);
+  }
+
+  .card-image .badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+  }
+
+  .card-body {
     padding: 1.5rem;
   }
 

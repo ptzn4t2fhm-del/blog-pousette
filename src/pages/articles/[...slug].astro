@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props;
 const { Content, headings } = await render(article);
-const { title, description, pubDate, category, products, faq } = article.data;
+const { title, description, pubDate, category, products, faq, coverImage } = article.data;
 ---
 
 <ArticleLayout
@@ -26,6 +26,7 @@ const { title, description, pubDate, category, products, faq } = article.data;
   category={category}
   faq={faq}
   products={products}
+  image={coverImage}
 >
   {category === 'comparatif' && products.length > 0 && <ComparisonTable products={products} />}
 
