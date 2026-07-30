@@ -6,7 +6,7 @@ description: >-
   recommandations.
 pubDate: '2026-07-28T12:48:02.442Z'
 category: guide
-coverImage: 'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?auto=format&fit=crop&w=1200&q=80'
+coverImage: 'https://images.unsplash.com/photo-1537376248011-d31fb998ae8f?auto=format&fit=crop&w=1200&q=80'
 keywords:
   - poussette plusieurs enfants
   - poussette double
