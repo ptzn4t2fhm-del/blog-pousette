@@ -6,7 +6,7 @@ description: >-
   quotidien.
 pubDate: '2026-07-29T12:54:48.263Z'
 category: article
-coverImage: 'https://images.unsplash.com/photo-1733380005522-b8d76ce49d13?auto=format&fit=crop&w=1200&q=80'
+coverImage: 'https://images.unsplash.com/photo-1673555344158-ed7f1abfc47e?auto=format&fit=crop&w=1200&q=80'
 keywords:
   - poussette sécurité routière
   - traverser avec une poussette

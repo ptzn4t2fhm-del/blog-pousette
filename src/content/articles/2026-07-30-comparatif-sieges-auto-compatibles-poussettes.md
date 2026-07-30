@@ -14,8 +14,7 @@ keywords:
   - poussette Bugaboo
   - Babyzen Yoyo
   - poussette UPPAbaby
-coverImage: >-
-  https://images.unsplash.com/photo-1691420762495-2f1c61d70ec6?auto=format&fit=crop&w=1200&q=80
+coverImage: 'https://images.unsplash.com/photo-1665578325705-cfe6de3ae2eb?auto=format&fit=crop&w=1200&q=80'
 products:
   - name: Bugaboo Fox 5 + Turtle Air by Nuna
     affiliateUrl: https://www.amazon.fr/s?k=Bugaboo+Fox+5+%2B+Turtle+Air+by+Nuna
