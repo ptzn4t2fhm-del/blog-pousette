@@ -1,5 +1,5 @@
 {
-  "dayCount": 5,
+  "dayCount": 6,
   "usedTopics": {
     "comparatif": [
       "Poussette électrique vs poussette manuelle",
@@ -10,7 +10,8 @@
       "Guide complet sur le pliage et le rangement des poussettes"
     ],
     "article": [
-      "Poussette et sécurité routière : ce qu'il faut savoir"
+      "Poussette et sécurité routière : ce qu'il faut savoir",
+      "Les idées reçues sur les poussettes"
     ]
   }
 }
