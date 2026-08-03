@@ -23,27 +23,44 @@ export const STROLLER_IMAGES = [
   { id: '1667835327820-787abdd7e914', tags: ['sécurité routière', 'traverser'] },
   { id: '1665578325705-cfe6de3ae2eb', tags: ['siège auto', 'sièges auto', 'cosy', 'travel system'] },
   { id: '1607180122862-1d0d773deb97', tags: ['pluie', 'habillage', 'météo'] },
+  { id: '1773672268537-21e349bc7273', tags: ['freins', 'freinage', 'roues', 'systèmes de freinage'] },
 ];
 
 function buildUrl(id, width = 1200) {
   return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${width}&q=80`;
 }
 
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// Un tag ne compte comme "présent" que s'il apparaît comme mot / expression
+// entière dans le sujet, pas comme simple sous-chaîne (voir le même correctif
+// dans pet-images.mjs). On autorise un "s" final optionnel pour matcher les
+// pluriels français sans réintroduire de faux positifs de sous-chaîne.
+function topicIncludesTag(lowerTopic, tag) {
+  const pattern = new RegExp(`(?<![\\p{L}])${escapeRegex(tag.toLowerCase())}s?(?![\\p{L}])`, 'u');
+  return pattern.test(lowerTopic);
+}
+
 /**
  * Choisit une image en fonction du sujet de l'article. On préfère les images
  * dont le plus grand nombre de tags apparaît dans le sujet (les correspondances
  * les plus spécifiques l'emportent) ; en cas d'égalité, on tire au sort parmi
- * les meilleures candidates. Si rien ne correspond, on tire au sort dans tout
- * le pool plutôt que d'imposer une image sans rapport.
+ * les meilleures candidates, en excluant si possible les images déjà utilisées
+ * par un autre article publié (voir `usedIds`) pour éviter les doublons visuels
+ * sur le site. Si rien ne correspond, on tire au sort dans tout le pool plutôt
+ * que d'imposer une image sans rapport.
  */
-export function pickCoverImage(topic, width = 1200) {
+export function pickCoverImage(topic, width = 1200, usedIds = []) {
   const lowerTopic = topic.toLowerCase();
+  const usedSet = new Set(usedIds);
 
   let bestScore = 0;
   let bestCandidates = [];
 
   for (const img of STROLLER_IMAGES) {
-    const score = img.tags.filter((tag) => lowerTopic.includes(tag)).length;
+    const score = img.tags.filter((tag) => topicIncludesTag(lowerTopic, tag)).length;
     if (score > bestScore) {
       bestScore = score;
       bestCandidates = [img];
@@ -53,6 +70,8 @@ export function pickCoverImage(topic, width = 1200) {
   }
 
   const pool = bestCandidates.length > 0 ? bestCandidates : STROLLER_IMAGES;
-  const chosen = pool[Math.floor(Math.random() * pool.length)];
+  const unused = pool.filter((img) => !usedSet.has(img.id));
+  const finalPool = unused.length > 0 ? unused : pool;
+  const chosen = finalPool[Math.floor(Math.random() * finalPool.length)];
   return buildUrl(chosen.id, width);
 }

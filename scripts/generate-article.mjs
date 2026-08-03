@@ -1,5 +1,5 @@
 import { config as loadEnv } from 'dotenv';
-import { writeFile, mkdir } from 'node:fs/promises';
+import { writeFile, mkdir, readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Anthropic from '@anthropic-ai/sdk';
@@ -13,6 +13,26 @@ import { pickCoverImage } from './stroller-images.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ARTICLES_DIR = path.join(__dirname, '..', 'src', 'content', 'articles');
+
+// Récupère les IDs d'images déjà utilisées par les articles publiés, pour que
+// pickCoverImage évite de réassigner une photo déjà visible ailleurs sur le
+// site (voir la logique anti-doublon dans stroller-images.mjs).
+async function getUsedCoverImageIds() {
+  let files;
+  try {
+    files = await readdir(ARTICLES_DIR);
+  } catch {
+    return [];
+  }
+  const ids = [];
+  for (const file of files) {
+    if (!file.endsWith('.md')) continue;
+    const content = await readFile(path.join(ARTICLES_DIR, file), 'utf-8');
+    const match = content.match(/photo-([a-zA-Z0-9-]+)\?/);
+    if (match) ids.push(match[1]);
+  }
+  return ids;
+}
 
 // override: true car certains environnements pré-définissent ANTHROPIC_API_KEY
 // à une chaîne vide, ce que dotenv ne remplace pas par défaut.
@@ -168,7 +188,8 @@ intégrés naturellement, et une FAQ finale.`;
   const pubDate = new Date();
   const dateStr = pubDate.toISOString().slice(0, 10);
   const fileSlug = `${dateStr}-${slugify(article.slug || article.title)}`;
-  const coverImage = pickCoverImage(topic);
+  const usedCoverImageIds = await getUsedCoverImageIds();
+  const coverImage = pickCoverImage(topic, 1200, usedCoverImageIds);
 
   const frontmatter = dumpYaml({
     title: article.title,
